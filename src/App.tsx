@@ -1,11 +1,13 @@
-
+import TableComponent from './components/TableComponent'
 
 function App() {
+
+
 
   return (
     <>
       <div className="home">
-        Hello
+        <TableComponent/>
       </div>
     </>
   )
