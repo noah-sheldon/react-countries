@@ -4,7 +4,7 @@ export interface Currency {
 }
 
 export interface RawCountry {
-  name?: {
+  name: {
     common: string;
   };
   languages?: {
@@ -28,4 +28,5 @@ export interface Countries {
   capital: string;
   population: number;
   flag: string;
+  favorite: boolean;
 }

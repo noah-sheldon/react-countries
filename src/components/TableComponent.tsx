@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
-import { AgGridReact } from "ag-grid-react";
-import parseCountriesData from "../stores/countriesStore";
-import { ColDef } from "ag-grid-community";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Countries } from "../types/countries";
-import { GridOptions } from "ag-grid-community";
+/* eslint-disable no-console */
+import { useEffect, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import parseCountriesData from '../stores/countriesStore';
+import { ColDef, GridOptions } from 'ag-grid-community';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { Countries } from '../types/countries';
+import FavoriteRenderer from './FavoriteRenderer';
 
-export const TableComponent: React.FC = () => {
+const TableComponent: React.FC = () => {
   const [countries, SetCountries] = useState<Countries[]>([]);
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +18,7 @@ export const TableComponent: React.FC = () => {
         const data = await parseCountriesData();
         SetCountries(data);
       } catch (error) {
-        console.log(`Couldn't fetch countries ${error}`);
+        console.error(`Couldn't fetch countries ${error}`);
       }
     };
     fetchData();
@@ -24,8 +26,14 @@ export const TableComponent: React.FC = () => {
 
   const columnDefs: ColDef[] = [
     {
-      headerName: "Flag",
-      field: "flag",
+      headerName: 'Favorite',
+      field: 'favorite',
+      cellRenderer: FavoriteRenderer,
+      editable: true,
+    },
+    {
+      headerName: 'Flag',
+      field: 'flag',
       cellRenderer: (params: any) => {
         const flagUrl = params.data.flag; // Adjust according to your data structure
         return flagUrl ? (
@@ -33,29 +41,29 @@ export const TableComponent: React.FC = () => {
         ) : null;
       },
     },
-    { headerName: "Country Name", field: "name" },
+    { headerName: 'Country Name', field: 'name' },
     {
-      headerName: "Currency Code",
+      headerName: 'Currency Code',
       valueGetter: (params) =>
-        params.data.currencyCode ? params.data.currencyCode.join(", ") : "N/A",
+        params.data.currencyCode ? params.data.currencyCode.join(', ') : 'N/A',
     },
     {
-      headerName: "Currency",
+      headerName: 'Currency',
       valueGetter: (params) =>
-        params.data.currencies ? params.data.currencies.join(", ") : "N/A",
+        params.data.currencies ? params.data.currencies.join(', ') : 'N/A',
     },
     {
-      headerName: "Languages",
+      headerName: 'Languages',
       valueGetter: (params) =>
-        params.data.languages ? params.data.languages.join(", ") : "N/A",
+        params.data.languages ? params.data.languages.join(', ') : 'N/A',
     },
     {
-      headerName: "Capital",
-      field: "capital",
+      headerName: 'Capital',
+      field: 'capital',
     },
     {
-      headerName: "Population",
-      field: "population",
+      headerName: 'Population',
+      field: 'population',
     },
   ];
 
@@ -65,23 +73,30 @@ export const TableComponent: React.FC = () => {
       minWidth: 100,
     },
     suppressHorizontalScroll: true,
-    domLayout: "autoHeight",
+    domLayout: 'autoHeight',
     onGridReady: (params: any) => {
       params.api?.sizeColumnsToFit();
     },
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   return (
-    <div className="container my-auto ">
-      {/* <div className="search-box h-20 align-middle">
-        <span>Search:</span>
-        <input type="text" id="filter-text-box" placeholder="Filter..." />
-      </div> */}
-      <div className="ag-theme-alpine" style={{ width: "100%" }}>
+    <div className="container-md  flex-row justify-center align-middle items-center h-screen w-100">
+      <input
+        type="input"
+        className="border border-gray rounded-lg px-4 m-10 align-middle justify-center"
+        placeholder="Search..."
+        onChange={handleSearch}
+      />
+      <div className="ag-theme-alpine">
         <AgGridReact
           rowData={countries}
           columnDefs={columnDefs}
           gridOptions={gridOptions}
+          quickFilterText={search}
         />
       </div>
     </div>

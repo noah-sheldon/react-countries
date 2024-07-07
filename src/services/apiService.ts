@@ -6,4 +6,3 @@ const getAllCountries = async () => {
 };
 
 export default getAllCountries;
-  

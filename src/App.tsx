@@ -1,16 +1,13 @@
-import TableComponent from './components/TableComponent'
+import TableComponent from './components/TableComponent';
 
 function App() {
-
-
-
   return (
     <>
       <div className="home">
-        <TableComponent/>
+        <TableComponent />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
