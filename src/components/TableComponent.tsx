@@ -2,13 +2,7 @@
 import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import parseCountriesData from '../stores/countriesStore';
-import {
-  ColDef,
-  GridOptions,
-  SortChangedEvent,
-  FilterChangedEvent,
-  FilterModel,
-} from 'ag-grid-community';
+import { ColDef, GridOptions } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Countries } from '../types/countries';
@@ -94,13 +88,6 @@ const TableComponent: React.FC = () => {
     domLayout: 'autoHeight',
     onGridReady: (params: any) => {
       params.api?.sizeColumnsToFit();
-    },
-    onSortChanged: (event: SortChangedEvent) => {
-      console.log('Sorting changed:', event.columnApi.getAllColumns());
-    },
-    onFilterChanged: (event: FilterChangedEvent) => {
-      const filterModel: FilterModel = event.api?.getFilterModel() || {};
-      console.log('Filter changed:', filterModel);
     },
     animateRows: true,
     suppressPaginationPanel: false,
