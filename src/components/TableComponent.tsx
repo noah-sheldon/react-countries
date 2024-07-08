@@ -2,7 +2,13 @@
 import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import parseCountriesData from '../stores/countriesStore';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import {
+  ColDef,
+  GridOptions,
+  SortChangedEvent,
+  FilterChangedEvent,
+  FilterModel,
+} from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Countries } from '../types/countries';
