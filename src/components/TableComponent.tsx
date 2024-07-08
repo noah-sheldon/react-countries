@@ -7,6 +7,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Countries } from '../types/countries';
 import FavoriteRenderer from './FavoriteRenderer';
+import CardComponent from './CardComponent';
 
 const TableComponent: React.FC = () => {
   const [countries, SetCountries] = useState<Countries[]>([]);
@@ -97,45 +98,6 @@ const TableComponent: React.FC = () => {
     setSearch(e.target.value);
   };
 
-  const renderDetailsCard = () => {
-    if (!selectedCountry) {
-      return null;
-    }
-
-    return (
-      <div className="bg-white shadow-md rounded-lg p-4">
-        <h2 className="text-xl font-semibold mb-2">{selectedCountry.name}</h2>
-        <p>
-          <strong>Capital:</strong> {selectedCountry.capital || 'N/A'}
-        </p>
-        <p>
-          <strong>Population:</strong> {selectedCountry.population || 'N/A'}
-        </p>
-        <p>
-          <strong>Languages:</strong>{' '}
-          {selectedCountry.languages.join(', ') || 'N/A'}
-        </p>
-        <p>
-          <strong>Currencies:</strong>{' '}
-          {selectedCountry.currencies.join(', ') || 'N/A'}
-        </p>
-        <p>
-          <strong>Flag:</strong>{' '}
-          <img
-            src={selectedCountry.flag}
-            alt={`Flag of ${selectedCountry.name}`}
-          />
-        </p>
-        <button
-          className="mt-4 px-4 py-2 bg-blue-500 text-white"
-          onClick={() => setSelectedCountry(null)}
-        >
-          Close
-        </button>
-      </div>
-    );
-  };
-
   return (
     <div className="container mx-auto p-4">
       <div className="ag-theme-alpine shadow-lg rounded-lg overflow-hidden">
@@ -155,7 +117,10 @@ const TableComponent: React.FC = () => {
             />
           </>
         )}
-        {selectedCountry && renderDetailsCard()}
+        <CardComponent
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+        />
       </div>
     </div>
   );
