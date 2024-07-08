@@ -137,13 +137,13 @@ const TableComponent: React.FC = () => {
   };
 
   return (
-    <div className="container-md  flex-row justify-center align-middle items-center h-screen w-100">
-      <div className="ag-theme-alpine">
+    <div className="container mx-auto p-4">
+      <div className="ag-theme-alpine shadow-lg rounded-lg overflow-hidden">
         {!selectedCountry && (
           <>
             <input
               type="input"
-              className="border border-gray rounded-lg px-4 m-10 align-middle justify-center"
+              className="border border-gray-300 rounded-lg px-4 py-2 mb-4"
               placeholder="Search..."
               onChange={handleSearch}
             />

@@ -32,6 +32,7 @@ const FavoriteRenderer = (params: any) => {
       type="checkbox"
       checked={data.favorite}
       onChange={handleCheckboxChange}
+      className="form-checkbox h-5 w-5 border-gray-300 rounded"
     />
   );
 };
