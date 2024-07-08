@@ -38,7 +38,7 @@ const TableComponent: React.FC = () => {
       headerName: 'Flag',
       field: 'flag',
       cellRenderer: (params: any) => {
-        const flagUrl = params.data.flag; // Adjust according to your data structure
+        const flagUrl = params.data.flag;
         return flagUrl ? (
           <img src={flagUrl} alt="Flag" style={{ width: 30, height: 20 }} />
         ) : null;
@@ -74,7 +74,11 @@ const TableComponent: React.FC = () => {
     defaultColDef: {
       flex: 1,
       minWidth: 100,
+      sortable: true,
+      filter: true,
     },
+    pagination: true,
+    paginationPageSize: 15,
     onCellClicked: (event) => {
       if (event.column.getColDef().field !== 'favorite') {
         setSelectedCountry(event.data);
@@ -85,6 +89,15 @@ const TableComponent: React.FC = () => {
     onGridReady: (params: any) => {
       params.api?.sizeColumnsToFit();
     },
+    onSortChanged: (event: SortChangedEvent) => {
+      console.log('Sorting changed:', event.columnApi.getAllColumns());
+    },
+    onFilterChanged: (event: FilterChangedEvent) => {
+      const filterModel: FilterModel = event.api?.getFilterModel() || {};
+      console.log('Filter changed:', filterModel);
+    },
+    animateRows: true,
+    suppressPaginationPanel: false,
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +157,6 @@ const TableComponent: React.FC = () => {
             <AgGridReact
               rowData={countries}
               columnDefs={columnDefs}
-              // onRowClicked={handleRowClick}
               gridOptions={gridOptions}
               quickFilterText={search}
             />
