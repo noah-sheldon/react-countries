@@ -11,6 +11,9 @@ import FavoriteRenderer from './FavoriteRenderer';
 const TableComponent: React.FC = () => {
   const [countries, SetCountries] = useState<Countries[]>([]);
   const [search, setSearch] = useState<string>('');
+  const [selectedCountry, setSelectedCountry] = useState<Countries | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +75,11 @@ const TableComponent: React.FC = () => {
       flex: 1,
       minWidth: 100,
     },
+    onCellClicked: (event) => {
+      if (event.column.getColDef().field !== 'favorite') {
+        setSelectedCountry(event.data);
+      }
+    },
     suppressHorizontalScroll: true,
     domLayout: 'autoHeight',
     onGridReady: (params: any) => {
@@ -83,21 +91,66 @@ const TableComponent: React.FC = () => {
     setSearch(e.target.value);
   };
 
+  const renderDetailsCard = () => {
+    if (!selectedCountry) {
+      return null;
+    }
+
+    return (
+      <div className="bg-white shadow-md rounded-lg p-4">
+        <h2 className="text-xl font-semibold mb-2">{selectedCountry.name}</h2>
+        <p>
+          <strong>Capital:</strong> {selectedCountry.capital || 'N/A'}
+        </p>
+        <p>
+          <strong>Population:</strong> {selectedCountry.population || 'N/A'}
+        </p>
+        <p>
+          <strong>Languages:</strong>{' '}
+          {selectedCountry.languages.join(', ') || 'N/A'}
+        </p>
+        <p>
+          <strong>Currencies:</strong>{' '}
+          {selectedCountry.currencies.join(', ') || 'N/A'}
+        </p>
+        <p>
+          <strong>Flag:</strong>{' '}
+          <img
+            src={selectedCountry.flag}
+            alt={`Flag of ${selectedCountry.name}`}
+          />
+        </p>
+        <button
+          className="mt-4 px-4 py-2 bg-blue-500 text-white"
+          onClick={() => setSelectedCountry(null)}
+        >
+          Close
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="container-md  flex-row justify-center align-middle items-center h-screen w-100">
-      <input
-        type="input"
-        className="border border-gray rounded-lg px-4 m-10 align-middle justify-center"
-        placeholder="Search..."
-        onChange={handleSearch}
-      />
       <div className="ag-theme-alpine">
-        <AgGridReact
-          rowData={countries}
-          columnDefs={columnDefs}
-          gridOptions={gridOptions}
-          quickFilterText={search}
-        />
+        {!selectedCountry && (
+          <>
+            <input
+              type="input"
+              className="border border-gray rounded-lg px-4 m-10 align-middle justify-center"
+              placeholder="Search..."
+              onChange={handleSearch}
+            />
+            <AgGridReact
+              rowData={countries}
+              columnDefs={columnDefs}
+              // onRowClicked={handleRowClick}
+              gridOptions={gridOptions}
+              quickFilterText={search}
+            />
+          </>
+        )}
+        {selectedCountry && renderDetailsCard()}
       </div>
     </div>
   );

@@ -22,7 +22,9 @@ const FavoriteRenderer = (params: any) => {
       'favoriteCountries',
       JSON.stringify(favoriteCountries)
     );
-    params.api.refreshCells({ rowNodes: [params.node] });
+    params.api.refreshCells({
+      rowNodes: [params.node],
+    });
   };
 
   return (
