@@ -80,6 +80,7 @@ const TableComponent: React.FC = () => {
     },
     pagination: true,
     paginationPageSize: 15,
+    paginationPageSizeSelector: [15, 20, 50, 100],
     onCellClicked: (event) => {
       if (event.column.getColDef().field !== 'favorite') {
         setSelectedCountry(event.data);
